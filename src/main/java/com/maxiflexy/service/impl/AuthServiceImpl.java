@@ -2,11 +2,13 @@ package com.maxiflexy.service.impl;
 
 import com.maxiflexy.domain.entity.UserEntity;
 import com.maxiflexy.domain.enums.Role;
+import com.maxiflexy.payload.request.EmailDetails;
 import com.maxiflexy.payload.request.UserRequest;
 import com.maxiflexy.payload.respond.AccountInfo;
 import com.maxiflexy.payload.respond.BankResponse;
 import com.maxiflexy.repository.UserRepository;
 import com.maxiflexy.service.AuthService;
+import com.maxiflexy.service.EmailService;
 import com.maxiflexy.utils.AccountUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.math.BigDecimal;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Override
     public BankResponse registerUser(UserRequest userRequest) {
@@ -53,6 +56,16 @@ public class AuthServiceImpl implements AuthService {
         UserEntity savedUser = userRepository.save(newUser);
 
         //Add email alert here
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(savedUser.getEmail())
+                .subject("ACCOUNT CREATION")
+                .messageBody("CONGRATULATIONS!! Your Account Has Been Successfully Created.\n" + "Your Account Details: \n" +
+                        "Account Name: " + savedUser.getFirstName() + " " + savedUser.getLastName() + " " + savedUser.getOtherName() +
+                        "\nAccount Number : " + savedUser.getAccountNumber() +
+                        "\nAccount Type : Savings Account")
+                .build();
+
+        emailService.sendEmailAlert(emailDetails);
 
 
         return BankResponse.builder()
