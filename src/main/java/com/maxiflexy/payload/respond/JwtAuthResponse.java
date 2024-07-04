@@ -23,7 +23,7 @@ public class JwtAuthResponse {
 
     private String gender;
 
-    // private String accessToken
+    private String accessToken;
 
     private String tokenType = "Bearer";
 

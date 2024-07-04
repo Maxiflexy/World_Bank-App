@@ -18,7 +18,7 @@ public class ApiResponse<T> {
 
     private String responseTime;
 
-    public ApiResponse(T data, String message) {
+    public ApiResponse( String message, T data) {
         this.data = data;
         this.message = message;
         this.responseTime = DateUtils.dateToString(LocalDateTime.now());

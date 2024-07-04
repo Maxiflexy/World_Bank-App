@@ -1,10 +1,14 @@
 package com.maxiflexy.infrastructure.controller;
 
+import com.maxiflexy.payload.request.LoginRequest;
 import com.maxiflexy.payload.request.UserRequest;
+import com.maxiflexy.payload.respond.ApiResponse;
 import com.maxiflexy.payload.respond.BankResponse;
+import com.maxiflexy.payload.respond.JwtAuthResponse;
 import com.maxiflexy.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,4 +27,8 @@ public class AuthController {
     }
 
 
+    @PostMapping("/login-user")
+    public ResponseEntity<ApiResponse<JwtAuthResponse>> loginUser(@Valid @RequestBody LoginRequest loginRequest){
+        return authService.loginUser(loginRequest);
+    }
 }
