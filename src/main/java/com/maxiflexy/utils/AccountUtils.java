@@ -20,6 +20,14 @@ public class AccountUtils {
 
     public static final String ACCOUNT_NUMBER_FOUND_MESSAGE = "Account number found";
 
+    public static final String ACCOUNT_CREDITED_SUCCESS_CODE = "005";
+
+    public static final String ACCOUNT_CREDITED_SUCCESS_MESSAGE = "Account credited successfully";
+
+    public static final String ACCOUNT_DEBITED_SUCCESS_CODE = "006";
+
+    public static final String ACCOUNT_DEBITED_SUCCESS_MESSAGE = "Account debited successfully";
+
     public static String generateAccountNumber(){
 
         //This algorithm will assume that your account number will be a total of 10 digits, since its default in Nigeria

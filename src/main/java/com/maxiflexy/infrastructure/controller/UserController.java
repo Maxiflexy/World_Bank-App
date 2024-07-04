@@ -1,13 +1,11 @@
 package com.maxiflexy.infrastructure.controller;
 
+import com.maxiflexy.payload.request.CreditAndDebitRequest;
 import com.maxiflexy.payload.request.EnquiryRequest;
 import com.maxiflexy.payload.respond.BankResponse;
 import com.maxiflexy.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -24,6 +22,16 @@ public class UserController {
     @GetMapping("/name-enquiry")
     public String nameEnquiry(@RequestBody EnquiryRequest enquiryRequest){
         return userService.nameEnquiry(enquiryRequest);
+    }
+
+    @PostMapping("/credit-account")
+    public BankResponse creditAccount(@RequestBody CreditAndDebitRequest creditAndDebitRequest){
+        return userService.creditAccount(creditAndDebitRequest);
+    }
+
+    @PostMapping("/debit-account")
+    public BankResponse debitAccount(@RequestBody CreditAndDebitRequest creditAndDebitRequest){
+        return userService.debitAccount(creditAndDebitRequest);
     }
 
 
