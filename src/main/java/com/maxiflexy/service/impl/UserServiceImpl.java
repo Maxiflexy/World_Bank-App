@@ -199,6 +199,27 @@ public class UserServiceImpl implements UserService {
                         sourceAccountUser.getAccountBalance())
                 .build();
 
-        return null;
+        emailService.sendEmailAlert(debitAlert);
+
+        UserEntity destinationAccountUser = userRepository.findByAccountNumber(
+                transferRequest.getDestinationAccountNumber());
+
+        destinationAccountUser.setAccountBalance(destinationAccountUser
+                .getAccountBalance().add(transferRequest.getAmount()));
+
+        EmailDetails creditAlert = EmailDetails.builder()
+                .subject("CREDIT ALERT")
+                .recipient(destinationAccountUser.getEmail())
+                .messageBody("Your account has been credited with " + transferRequest.getAmount() +
+                        " from " + sourceUsername + ". Your current account balance is " +
+                        destinationAccountUser.getAccountBalance())
+                .build();
+
+
+        return BankResponse.builder()
+                .responseCode("200")
+                .responseMessage("Transfer Successfully")
+                .accountInfo(null)
+                .build();
     }
 }
