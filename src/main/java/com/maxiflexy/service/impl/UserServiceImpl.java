@@ -207,6 +207,8 @@ public class UserServiceImpl implements UserService {
         destinationAccountUser.setAccountBalance(destinationAccountUser
                 .getAccountBalance().add(transferRequest.getAmount()));
 
+        userRepository.save(destinationAccountUser);
+
         EmailDetails creditAlert = EmailDetails.builder()
                 .subject("CREDIT ALERT")
                 .recipient(destinationAccountUser.getEmail())
@@ -215,6 +217,7 @@ public class UserServiceImpl implements UserService {
                         destinationAccountUser.getAccountBalance())
                 .build();
 
+        emailService.sendEmailAlert(creditAlert);
 
         return BankResponse.builder()
                 .responseCode("200")

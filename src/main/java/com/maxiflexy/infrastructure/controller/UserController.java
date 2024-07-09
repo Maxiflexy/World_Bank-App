@@ -2,6 +2,7 @@ package com.maxiflexy.infrastructure.controller;
 
 import com.maxiflexy.payload.request.CreditAndDebitRequest;
 import com.maxiflexy.payload.request.EnquiryRequest;
+import com.maxiflexy.payload.request.TransferRequest;
 import com.maxiflexy.payload.respond.BankResponse;
 import com.maxiflexy.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class UserController {
     @PostMapping("/debit-account")
     public BankResponse debitAccount(@RequestBody CreditAndDebitRequest creditAndDebitRequest){
         return userService.debitAccount(creditAndDebitRequest);
+    }
+
+    @PostMapping("/transfer")
+    public BankResponse transferAmount(@RequestBody TransferRequest transferRequest){
+        return userService.transfer(transferRequest);
     }
 
 
