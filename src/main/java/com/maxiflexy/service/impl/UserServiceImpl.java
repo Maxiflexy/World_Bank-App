@@ -4,6 +4,7 @@ import com.maxiflexy.domain.entity.UserEntity;
 import com.maxiflexy.payload.request.CreditAndDebitRequest;
 import com.maxiflexy.payload.request.EmailDetails;
 import com.maxiflexy.payload.request.EnquiryRequest;
+import com.maxiflexy.payload.request.TransferRequest;
 import com.maxiflexy.payload.respond.AccountInfo;
 import com.maxiflexy.payload.respond.BankResponse;
 import com.maxiflexy.repository.UserRepository;
@@ -150,5 +151,54 @@ public class UserServiceImpl implements UserService {
                         .accountBalance(userToDebit.getAccountBalance())
                         .build())
                 .build();
+    }
+
+    @Override
+    public BankResponse transfer(TransferRequest transferRequest) {
+        /**
+         * 1. first check if the destination account number exists
+         * 2. then check if the amount to send is available
+         * 3. then deduct the amount to send from sender balance
+         * 4. then add the send amount to receiver balance
+         * 5. then send a debit alert and credit alert to the sender and receiver respectively
+         */
+
+        boolean isDestinationAccountExists =
+                userRepository.existsByAccountNumber(transferRequest.getDestinationAccountNumber());
+
+        if(!isDestinationAccountExists){
+            return BankResponse.builder()
+                    .responseCode("008")
+                    .responseMessage("Account number does not exists")
+                    .build();
+        }
+
+        UserEntity sourceAccountUser = userRepository.findByAccountNumber(transferRequest.getSourceAccountNumber());
+
+        if(transferRequest.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0){
+            return BankResponse.builder()
+                    .responseCode("009")
+                    .responseMessage("INSUFFICIENT BALANCE")
+                    .accountInfo(null)
+                    .build();
+        }
+
+        sourceAccountUser.setAccountBalance(
+                sourceAccountUser.getAccountBalance().subtract(transferRequest.getAmount()));
+
+        userRepository.save(sourceAccountUser);
+
+        String sourceUsername = sourceAccountUser.getFirstName() + " " +
+                sourceAccountUser.getOtherName() + " " + sourceAccountUser.getLastName();
+
+        EmailDetails debitAlert = EmailDetails.builder()
+                .subject("DEBIT ALERT")
+                .recipient(sourceAccountUser.getEmail())
+                .messageBody("THe sum of " + transferRequest.getAmount() +
+                        " has been deducted from your account. Your current balance is " +
+                        sourceAccountUser.getAccountBalance())
+                .build();
+
+        return null;
     }
 }

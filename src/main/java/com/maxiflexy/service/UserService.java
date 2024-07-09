@@ -2,6 +2,7 @@ package com.maxiflexy.service;
 
 import com.maxiflexy.payload.request.CreditAndDebitRequest;
 import com.maxiflexy.payload.request.EnquiryRequest;
+import com.maxiflexy.payload.request.TransferRequest;
 import com.maxiflexy.payload.respond.BankResponse;
 
 public interface UserService {
@@ -13,4 +14,6 @@ public interface UserService {
     BankResponse creditAccount(CreditAndDebitRequest creditAndDebitRequest);
 
     BankResponse debitAccount(CreditAndDebitRequest creditAndDebitRequest);
+
+    BankResponse transfer(TransferRequest transferRequest);
 }
