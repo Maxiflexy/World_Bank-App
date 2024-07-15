@@ -26,11 +26,9 @@ public class AuthController {
         return authService.registerUser(userRequest);
     }
 
-
-
-
     @PostMapping("/login-user")
     public ResponseEntity<ApiResponse<JwtAuthResponse>> loginUser(@Valid @RequestBody LoginRequest loginRequest){
         return authService.loginUser(loginRequest);
     }
+
 }
