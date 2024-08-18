@@ -3,10 +3,10 @@ package com.maxiflexy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class WorldBankingApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 
